@@ -4,7 +4,7 @@ from typing import Any
 
 class DataProcessor(ABC):
     def __init__(self) -> None:
-        self.types: Any
+        self.types: Any = None
         self._buffer: list[tuple[int, str]] = []
         self._next_rank = 0
 
