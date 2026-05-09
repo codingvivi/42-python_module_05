@@ -178,7 +178,7 @@ def main() -> None:
     print("\nRegistering Processors")
     stream.register_processor([NumericProcessor(), TextProcessor(), LogProcessor()])
 
-    batch1: list = [
+    batch1: list[Any] = [
         "Hello world",
         [3.14, -1, 2.71],
         [
@@ -197,7 +197,7 @@ def main() -> None:
     print()
     stream.print_processors_stats()
 
-    batch2: list = [
+    batch2: list[Any] = [
         21,
         ["I love AI", "LLMs are wonderful", "Stay healthy"],
         [
