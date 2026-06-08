@@ -77,10 +77,20 @@ checks-dist:
 test-mypy:
     uv run mypy --check-untyped-defs {{src-dir}}
 
-# run ruff/flake8 across src/
+# run ruff across src/
 [group('test')]
-test-lint *args:
+test-ruff *args:
     uv run ruff check {{src-dir}} {{args}}
+
+# run flake8 across src/
+[group('test')]
+test-flake8 *args:
+    uv run flake8 {{src-dir}} {{args}}
+
+[group('test')]
+test-lint:
+    just test-ruff
+    just test-flake8
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # clean

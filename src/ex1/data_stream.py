@@ -106,7 +106,10 @@ class DataStream:
                 # only runs if no breaks happened
                 # meaning we've looped through all the procs
                 else:
-                    raise TypeError(f"DataStream error - Can't process element in stream: {item}")
+                    raise TypeError(
+                        "DataStream error - "
+                        f"Can't process element in stream: {item}"
+                    )
             except Exception as e:
                 print(e)
                 continue
@@ -147,7 +150,10 @@ def main() -> None:
         "Hello world",
         [3.14, -1, 2.71],
         [
-            {"log_level": "WARNING", "log_message": "Telnet access! Use ssh instead"},
+            {
+                "log_level": "WARNING",
+                "log_message": "Telnet access! Use ssh instead",
+            },
             {"log_level": "INFO", "log_message": "User wil is connected"},
         ],
         42,
@@ -168,7 +174,10 @@ def main() -> None:
     stream.print_processors_stats()
     print()
 
-    print("Consume some elements from the data processors: Numeric 3, Text 2, Log 1")
+    print(
+        "Consume some elements from the data processors: "
+        "Numeric 3, Text 2, Log 1"
+    )
     for _ in range(3):
         num_proc.output()
     for _ in range(2):

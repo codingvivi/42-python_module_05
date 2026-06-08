@@ -67,7 +67,7 @@ class LogProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
         return super().validate(data)
 
-    def ingest(self, data: dict[Any, Any]) -> None:
+    def ingest(self, data: dict[Any, Any] | list[dict[Any, Any]]) -> None:
         super().ingest(data)
 
 

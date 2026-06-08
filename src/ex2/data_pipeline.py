@@ -115,8 +115,12 @@ class DataStream:
     def __init__(self) -> None:
         self.procs: list[DataProcessor] = []
 
-    def register_processor(self, proc: DataProcessor | list[DataProcessor]) -> None:
-        new_procs: list[DataProcessor] = proc if isinstance(proc, list) else [proc]
+    def register_processor(
+        self, proc: DataProcessor | list[DataProcessor]
+    ) -> None:
+        new_procs: list[DataProcessor] = (
+            proc if isinstance(proc, list) else [proc]
+        )
         self.procs.extend(new_procs)
 
     def process_stream(self, stream: list[typing.Any]) -> None:
@@ -133,7 +137,10 @@ class DataStream:
                 # only runs if no breaks happened
                 # meaning we've looped through all the procs
                 else:
-                    raise TypeError(f"DataStream error - Can't process element in stream: {item}")
+                    raise TypeError(
+                        "DataStream error - "
+                        f"Can't process element in stream: {item}"
+                    )
             except Exception as e:
                 print(e)
                 continue
@@ -176,13 +183,18 @@ def main() -> None:
     stream.print_processors_stats()
 
     print("\nRegistering Processors")
-    stream.register_processor([NumericProcessor(), TextProcessor(), LogProcessor()])
+    stream.register_processor(
+        [NumericProcessor(), TextProcessor(), LogProcessor()]
+    )
 
     batch1: list[Any] = [
         "Hello world",
         [3.14, -1, 2.71],
         [
-            {"log_level": "WARNING", "log_message": "Telnet access! Use ssh instead"},
+            {
+                "log_level": "WARNING",
+                "log_message": "Telnet access! Use ssh instead",
+            },
             {"log_level": "INFO", "log_message": "User wil is connected"},
         ],
         42,
@@ -202,7 +214,10 @@ def main() -> None:
         ["I love AI", "LLMs are wonderful", "Stay healthy"],
         [
             {"log_level": "ERROR", "log_message": "500 server crash"},
-            {"log_level": "NOTICE", "log_message": "Certificate expires in 10 days"},
+            {
+                "log_level": "NOTICE",
+                "log_message": "Certificate expires in 10 days",
+            },
         ],
         [32, 42, 64, 84, 128, 168],
         "World hello",

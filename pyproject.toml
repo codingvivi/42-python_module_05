@@ -8,14 +8,15 @@ dependencies = []
 dev = [
     "mypy",
     "ruff",
+    "flake8>=7.3.0",
 ]
 
 [tool.ruff]
-line-length = 100
+line-length = 79
 src = ["src"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B", "SIM"]
+select = ["E", "W", "F", "I", "UP", "B", "SIM"]
 
 [tool.mypy]
 strict = true
