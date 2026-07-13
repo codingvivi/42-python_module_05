@@ -5,6 +5,7 @@ from typing import Any
 class DataProcessor(ABC):
     def __init__(self) -> None:
         self.types: Any = None
+        self.error_message: str = "Invalid input, can't ingest"
         self._buffer: list[tuple[int, str]] = []
         self._next_rank = 0
 
@@ -20,13 +21,16 @@ class DataProcessor(ABC):
         else:
             return False
 
+    def _format(self, item: Any) -> str:
+        return str(item)
+
     @abstractmethod
     def ingest(self, data: Any) -> None:
         if not self.validate(data):
-            raise ValueError("Invalid input, can't ingest")
+            raise ValueError(self.error_message)
         items = data if isinstance(data, list) else [data]
         for x in items:
-            self._buffer.append((self._next_rank, str(x)))
+            self._buffer.append((self._next_rank, self._format(x)))
             self._next_rank += 1
 
     def output(self) -> tuple[int, str]:
@@ -39,6 +43,7 @@ class NumericProcessor(DataProcessor):
     def __init__(self) -> None:
         super().__init__()
         self.types = (int, float)
+        self.error_message = "Improper numeric data"
 
     def validate(self, data: Any) -> bool:
         return super().validate(data)
@@ -51,6 +56,7 @@ class TextProcessor(DataProcessor):
     def __init__(self) -> None:
         super().__init__()
         self.types = str
+        self.error_message = "Improper text data"
 
     def validate(self, data: Any) -> bool:
         return super().validate(data)
@@ -63,12 +69,16 @@ class LogProcessor(DataProcessor):
     def __init__(self) -> None:
         super().__init__()
         self.types = dict
+        self.error_message = "Improper log data"
 
     def validate(self, data: Any) -> bool:
         return super().validate(data)
 
     def ingest(self, data: dict[Any, Any] | list[dict[Any, Any]]) -> None:
         super().ingest(data)
+
+    def _format(self, item: dict[Any, Any]) -> str:
+        return f"{item['log_level']}: {item['log_message']}"
 
 
 def print_header(title: str) -> None:

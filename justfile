@@ -34,9 +34,10 @@ run-all:
 [group('dist')]
 publish tag msg:
     just dist {{tag}}
-    just tag {{tag}} {{msg}}
+    just tag {{tag}} "{{msg}}"
     git push origin HEAD:refs/heads/main --tags
-    gh release create {{tag}} {{dist-dir}}/{{name}}_turnin_{{tag}}.tar.gz
+    gh release create {{tag}} --title "{{tag}}" --notes "{{msg}}" {{dist-dir}}/{{name}}_turnin_{{tag}}.tar.gz \
+        || gh release upload {{tag}} {{dist-dir}}/{{name}}_turnin_{{tag}}.tar.gz --clobber
 
 
 # checks then stage + tarball

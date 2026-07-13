@@ -13,6 +13,7 @@ class DataProcessor(ABC):
     def __init__(self) -> None:
         self.name: str = ""
         self.types: Any = None
+        self.error_message: str = "Invalid input, can't ingest"
         self._buffer: list[tuple[int, str]] = []
         self._processed = 0
 
@@ -34,7 +35,7 @@ class DataProcessor(ABC):
     @abstractmethod
     def ingest(self, data: Any) -> None:
         if not self.validate(data):
-            raise ValueError("Invalid input, can't ingest")
+            raise ValueError(self.error_message)
         items = data if isinstance(data, list) else [data]
         for x in items:
             self._buffer.append((self._processed, self._format(x)))
@@ -54,6 +55,7 @@ class NumericProcessor(DataProcessor):
         super().__init__()
         self.name = name
         self.types = (int, float)
+        self.error_message = "Improper numeric data"
 
     def validate(self, data: Any) -> bool:
         return super().validate(data)
@@ -67,6 +69,7 @@ class TextProcessor(DataProcessor):
         super().__init__()
         self.name = name
         self.types = str
+        self.error_message = "Improper text data"
 
     def validate(self, data: Any) -> bool:
         return super().validate(data)
@@ -80,11 +83,12 @@ class LogProcessor(DataProcessor):
         super().__init__()
         self.name = name
         self.types = dict
+        self.error_message = "Improper log data"
 
     def validate(self, data: Any) -> bool:
         return super().validate(data)
 
-    def ingest(self, data: dict[Any, Any]) -> None:
+    def ingest(self, data: dict[Any, Any] | list[dict[Any, Any]]) -> None:
         super().ingest(data)
 
     def _format(self, item: dict[Any, Any]) -> str:
